@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+body {
+  font-family: 'Patrick Hand', cursive;
+  /* 手写风格字体 */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background: url('https://example.com/your-background-image.jpg') no-repeat center center fixed;
+  /* 自定义背景链接 */
+  background-size: cover;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#clock-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  /* 半透明亚克力效果 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+#analog-clock {
+  width: 150px;
+  height: 150px;
+  border: 10px solid #00bcd4;
+  /* 天蓝色 */
+  border-radius: 50%;
+  position: relative;
+  margin: 20px 0;
+}
+
+#analog-clock .hand {
+  position: absolute;
+  background: #00bcd4;
+  /* 天蓝色 */
+  transform-origin: bottom;
+  bottom: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#analog-clock .hour {
+  width: 6px;
+  height: 40px;
+  z-index: 3;
+}
+
+#analog-clock .minute {
+  width: 4px;
+  height: 60px;
+  z-index: 2;
+}
+
+#analog-clock .second {
+  width: 2px;
+  height: 70px;
+  background: red;
+  z-index: 1;
+}
+
+#digital-clock {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+#ip-info {
+  font-size: 1em;
+  margin: 10px 0;
+}
+
+#main-content {
+  display: none;
+}
+
+header {
+  background: rgba(255, 255, 255, 0.7);
+  /* 半透明亚克力效果 */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  /* 半透明亚克力效果 */
+  border-radius: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background: rgba(0, 188, 212, 0.7);
+  /* 半透明天蓝色 */
+  color: #ffffff;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* 适配各种屏幕大小 */
+@media (max-width: 600px) {
+  #clock-container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  #ip-info,
+  #digital-clock {
+    font-size: 1em;
+  }
+}
