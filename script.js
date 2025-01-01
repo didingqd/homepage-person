@@ -1,82 +1,54 @@
-async function fetchTimeAndIP() {
-  // 获取当前时间
-  const timeResponse = await fetch('https://worldtimeapi.org/api/ip');
-  const timeData = await timeResponse.json();
-  const dateTime = new Date(timeData.datetime);
-  const options = { timeZone: timeData.timezone, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+// 数据部分：分组和链接
+const groups = [
+  {
+    title: '搜索引擎',
+    links: [
+      { name: '谷歌', url: 'https://www.google.com', icon: 'logos:google-icon' },
+      { name: '必应', url: 'https://www.bing.com', icon: 'logos:bing' },
+      { name: '百度', url: 'https://baidu.com', icon: 'ri:baidu-fill' },
+    ],
+  },
+  {
+    title: '开发工具',
+    links: [
+      { name: 'GitHub', url: 'https://github.com', icon: 'logos:github-icon' },
+      { name: 'Cloudflare', url: 'https://www.cloudflare-cn.com', icon: 'logos:cloudflare' },
+    ],
+  },
+  {
+    title: '其他',
+    links: [
+      { name: 'Example', url: 'https://example.com', icon: 'carbon:link' },
+      { name: 'Iconify', url: 'https://icon-sets.iconify.design', icon: 'simple-icons:iconify' },
+    ],
+  },
+];
 
-  // 显示当前时间和日期
-  document.getElementById('digital-clock').innerText = dateTime.toLocaleTimeString('zh-CN', options);
-  document.getElementById('date').innerText = dateTime.toLocaleDateString('zh-CN');
-
-  // 获取访问者的 IP 地址
-  const ipResponse = await fetch('https://api.ipify.org?format=json');
-  const ipData = await ipResponse.json();
-  const ip = ipData.ip;
-
-  // 获取 IP 地址的详细信息
-  const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
-  const geoData = await geoResponse.json();
-
-  // 显示 IP 信息
-  const ipv4 = ip || '不支持';
-  const ipv6 = geoData.ipv6 || '不支持';
-  const address = `${geoData.city}, ${geoData.region}, ${geoData.country}`;
-
-  document.getElementById('ip-info').innerHTML = `IPv4: ${ipv4}<br>IPv6: ${ipv6}<br>地址: ${address}<br>时区: ${geoData.timezone}`;
+// 动态生成 HTML 的函数
+function renderGroups() {
+  const container = document.getElementById('groups-container');
+  container.innerHTML = groups
+    .map(
+      (group) => `
+        <div class="group-container p-6">
+          <h2 class="text-xl font-semibold text-center mb-4 text-gray-800">${group.title}</h2>
+          <div class="space-y-3">
+            ${group.links
+          .map(
+            (link) => `
+                  <a href="${link.url}" class="flex items-center p-3 bg-gradient-to-r from-pink-50 to-blue-50 rounded-lg transition duration-300 hover:bg-gray-50">
+                    <span class="iconify mr-3" data-icon="${link.icon}" data-width="24" data-height="24"></span>
+                    <span class="link-text">${link.name}</span>
+                  </a>
+                `
+          )
+          .join('')}
+          </div>
+        </div>
+      `
+    )
+    .join('');
 }
 
-function updateAnalogClock() {
-  const now = new Date();
-  const seconds = now.getSeconds();
-  const minutes = now.getMinutes();
-  const hours = now.getHours();
-
-  const secondDeg = ((seconds / 60) * 360) + 90; // 90度偏移
-  const minuteDeg = ((minutes / 60) * 360) + ((seconds / 60) * 6) + 90; // 90度偏移
-  const hourDeg = ((hours / 12) * 360) + ((minutes / 60) * 30) + 90; // 90度偏移
-
-  document.querySelector('#analog-clock .second').style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
-  document.querySelector('#analog-clock .minute').style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
-  document.querySelector('#analog-clock .hour').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
-}
-
-function addSeasonalEffects() {
-  const month = new Date().getMonth();
-  const snowflakesContainer = document.createElement('div');
-  snowflakesContainer.className = 'snowflakes';
-
-  if (month === 11 || month === 0 || month === 1) { // 冬季
-    for (let i = 0; i < 50; i++) {
-      const snowflake = document.createElement('div');
-      snowflake.className = 'snowflake';
-      snowflake.innerHTML = '❄';
-      snowflake.style.left = Math.random() * 100 + 'vw';
-      snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-      snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'em';
-      snowflakesContainer.appendChild(snowflake);
-    }
-    document.body.appendChild(snowflakesContainer);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  fetchTimeAndIP();
-  addSeasonalEffects();
-
-  // 更新时钟
-  setInterval(() => {
-    updateAnalogClock();
-    fetchTimeAndIP(); // 每分钟更新一次时间和IP信息
-  }, 1000);
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY === 0) {
-      document.getElementById('clock-container').style.display = 'block';
-      document.getElementById('main-content').style.display = 'none';
-    } else {
-      document.getElementById('clock-container').style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
-    }
-  });
-});
+// 页面加载时渲染分组
+document.addEventListener('DOMContentLoaded', renderGroups);
